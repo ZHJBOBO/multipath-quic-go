@@ -1,11 +1,9 @@
 package quic
 
 import (
-	"bufio"
 	"errors"
-	"fmt"
 	"net"
-	"os"
+	//"os"
 	"time"
 
 	"github.com/ZHJBOBO/multipath-quic-go/congestion"
@@ -32,8 +30,8 @@ type pathManager struct {
 	handshakeCompleted chan struct{}
 	runClosed          chan struct{}
 	timer              *time.Timer
-	zcpClientLogger    *os.File
-	zcpServerLogger    *os.File
+	//zcpClientLogger    *os.File
+	//zcpServerLogger    *os.File
 }
 
 func (pm *pathManager) setup(conn connection) {
@@ -42,21 +40,21 @@ func (pm *pathManager) setup(conn connection) {
 	// those of server-initiated paths odd
 	if pm.sess.perspective == protocol.PerspectiveClient {
 		pm.nxtPathID = 1
-
-		f, err := os.Create("D:\\all_corpus\\zcp_client_path_info.csv")
-		if err != nil {
-			panic(err)
-		}
-		pm.zcpClientLogger = f
+		//
+		//f, err := os.Create("D:\\all_corpus\\zcp_client_path_info.csv")
+		//if err != nil {
+		//	panic(err)
+		//}
+		//pm.zcpClientLogger = f
 
 	} else {
 		pm.nxtPathID = 2
 
-		f, err := os.Create("D:\\all_corpus\\zcp_server_path_info.csv")
-		if err != nil {
-			panic(err)
-		}
-		pm.zcpServerLogger = f
+		//f, err := os.Create("D:\\all_corpus\\zcp_server_path_info.csv")
+		//if err != nil {
+		//	panic(err)
+		//}
+		//pm.zcpServerLogger = f
 
 	}
 
@@ -84,22 +82,22 @@ func (pm *pathManager) setup(conn connection) {
 	// Setup this first path
 	pm.sess.paths[protocol.InitialPathID].setup(pm.oliaSenders)
 
-	pth := pm.sess.paths[protocol.InitialPathID]
-	now := time.Now()
-	nanosec := now.UnixNano() // number of nanoseconds since January 1, 1970 UTC
-	locAddrPath := pth.conn.LocalAddr().String()
-	remAddrPath := pth.conn.RemoteAddr().String()
+	//pth := pm.sess.paths[protocol.InitialPathID]
+	//now := time.Now()
+	//nanosec := now.UnixNano() // number of nanoseconds since January 1, 1970 UTC
+	//locAddrPath := pth.conn.LocalAddr().String()
+	//remAddrPath := pth.conn.RemoteAddr().String()
 
-	if pm.sess.perspective == protocol.PerspectiveClient {
-		w := bufio.NewWriter(pm.zcpClientLogger)
-		fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, protocol.InitialPathID, locAddrPath, remAddrPath)
-		w.Flush()
-	} else {
-		w := bufio.NewWriter(pm.zcpServerLogger)
-		fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, protocol.InitialPathID, locAddrPath, remAddrPath)
-		w.Flush()
-
-	}
+	//if pm.sess.perspective == protocol.PerspectiveClient {
+	//	w := bufio.NewWriter(pm.zcpClientLogger)
+	//	fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, protocol.InitialPathID, locAddrPath, remAddrPath)
+	//	w.Flush()
+	//} else {
+	//	w := bufio.NewWriter(pm.zcpServerLogger)
+	//	fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, protocol.InitialPathID, locAddrPath, remAddrPath)
+	//	w.Flush()
+	//
+	//}
 
 	// With the initial path, get the remoteAddr to create paths accordingly
 	if conn.RemoteAddr() != nil {
@@ -191,18 +189,18 @@ func (pm *pathManager) createPath(locAddr net.UDPAddr, remAddr net.UDPAddr) erro
 	pth.setup(pm.oliaSenders)
 	pm.sess.paths[pm.nxtPathID] = pth
 
-	now := time.Now()         // current local time
-	nanosec := now.UnixNano() // number of nanoseconds since January 1, 1970 UTC
+	//	now := time.Now()         // current local time
+	//nanosec := now.UnixNano() // number of nanoseconds since January 1, 1970 UTC
 
-	if pm.sess.perspective == protocol.PerspectiveClient {
-		w := bufio.NewWriter(pm.zcpClientLogger)
-		fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, pm.nxtPathID, locAddr.String(), remAddr.String())
-		w.Flush()
-	} else {
-		w := bufio.NewWriter(pm.zcpServerLogger)
-		fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, pm.nxtPathID, locAddr.String(), remAddr.String())
-		w.Flush()
-	}
+	//if pm.sess.perspective == protocol.PerspectiveClient {
+	//	w := bufio.NewWriter(pm.zcpClientLogger)
+	//	fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, pm.nxtPathID, locAddr.String(), remAddr.String())
+	//	w.Flush()
+	//} else {
+	//	w := bufio.NewWriter(pm.zcpServerLogger)
+	//	fmt.Fprintf(w, "%d,%x,%s,%s \n", nanosec, pm.nxtPathID, locAddr.String(), remAddr.String())
+	//	w.Flush()
+	//}
 
 	if utils.Debug() {
 		utils.Debugf("Created path %x on %s to %s", pm.nxtPathID, locAddr.String(), remAddr.String())
@@ -343,6 +341,6 @@ func (pm *pathManager) closePaths() {
 		}
 	}
 	pm.sess.pathsLock.RUnlock()
-	pm.zcpClientLogger.Close()
-	pm.zcpServerLogger.Close()
+	//pm.zcpClientLogger.Close()
+	//pm.zcpServerLogger.Close()
 }

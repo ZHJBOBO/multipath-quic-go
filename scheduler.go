@@ -2,7 +2,6 @@ package quic
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"time"
 
@@ -15,32 +14,32 @@ import (
 type scheduler struct {
 	// XXX Currently round-robin based, inspired from MPTCP scheduler
 	quotas          map[protocol.PathID]uint
-	zcpClientLogger string
-	zcpServerLogger string
+	//zcpClientLogger string
+	//zcpServerLogger string
 }
 
 func (sch *scheduler) setup() {
 	sch.quotas = make(map[protocol.PathID]uint)
 	
-	sch.zcpClientLogger = "D:\\all_corpus\\zcp_client_packets_path.csv"
-	fClient, err := os.Create(sch.zcpClientLogger)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// close the file with defer
-	defer fClient.Close()
-	// write a string
-	io.WriteString(fClient, "streamID,connectionID,pathID,sntPkts,sntRetrans,sntLost,rcvPkts,pth.rttStats.SmoothedRTT() \n")
-
-	sch.zcpServerLogger = "D:\\all_corpus\\zcp_server_packets_path.csv"
-	fServer, err := os.Create(sch.zcpServerLogger)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// close the file with defer
-	defer fServer.Close()
-	// write a string
-	io.WriteString(fServer, "streamID,connectionID,pathID,sntPkts,sntRetrans,sntLost,rcvPkts,pth.rttStats.SmoothedRTT() \n")
+	//sch.zcpClientLogger = "D:\\all_corpus\\zcp_client_packets_path.csv"
+	//fClient, err := os.Create(sch.zcpClientLogger)
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//// close the file with defer
+	//defer fClient.Close()
+	//// write a string
+	//io.WriteString(fClient, "streamID,connectionID,pathID,sntPkts,sntRetrans,sntLost,rcvPkts,pth.rttStats.SmoothedRTT() \n")
+	//
+	//sch.zcpServerLogger = "D:\\all_corpus\\zcp_server_packets_path.csv"
+	//fServer, err := os.Create(sch.zcpServerLogger)
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//// close the file with defer
+	//defer fServer.Close()
+	//// write a string
+	//io.WriteString(fServer, "streamID,connectionID,pathID,sntPkts,sntRetrans,sntLost,rcvPkts,pth.rttStats.SmoothedRTT() \n")
 
 }
 
@@ -276,17 +275,17 @@ func (sch *scheduler) performPacketSending(s *session, windowUpdateFrames []*wir
 				// Last packet to send on the stream, print stats
 				s.pathsLock.RLock()
 				var f *os.File = nil
-				if s.perspective == protocol.PerspectiveClient {
-					f, err = os.OpenFile(sch.zcpClientLogger, os.O_APPEND|os.O_WRONLY, 0644)
-					if err != nil {
-						fmt.Println(err)
-					}
-				} else {
-					f, err = os.OpenFile(sch.zcpServerLogger, os.O_APPEND|os.O_WRONLY, 0644)
-					if err != nil {
-						fmt.Println(err)
-					}
-				}
+				//if s.perspective == protocol.PerspectiveClient {
+				//	f, err = os.OpenFile(sch.zcpClientLogger, os.O_APPEND|os.O_WRONLY, 0644)
+				//	if err != nil {
+				//		fmt.Println(err)
+				//	}
+				//} else {
+				//	f, err = os.OpenFile(sch.zcpServerLogger, os.O_APPEND|os.O_WRONLY, 0644)
+				//	if err != nil {
+				//		fmt.Println(err)
+				//	}
+				//}
 				utils.Infof("Info for stream %x of %x", frame.StreamID, s.connectionID)
 				
 				for pathID, pth := range s.paths {
