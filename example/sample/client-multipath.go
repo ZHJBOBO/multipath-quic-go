@@ -20,6 +20,7 @@ func main() {
 
 	quicConfig := &quic.Config{
 		CreatePaths: mp_flag,
+		//Versions:    protocol.SupportedVersions,
 	}
 
 	//addr := os.Args[2] + ":" + config.PORT

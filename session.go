@@ -276,6 +276,7 @@ func (s *session) setup(
 			return s.config.AcceptCookie(clientAddr, cookie)
 		}
 		if s.version.UsesTLS() {
+			fmt.Println("s.version.UsesTLS")
 			s.cryptoSetup, err = handshake.NewCryptoSetupTLS(
 				"",
 				s.perspective,
@@ -285,6 +286,7 @@ func (s *session) setup(
 				aeadChanged,
 			)
 		} else {
+			fmt.Println("s.version.UsesCrypto")
 			s.cryptoSetup, err = newCryptoSetup(
 				s.connectionID,
 				s.paths[protocol.InitialPathID].conn.RemoteAddr(),
@@ -300,6 +302,7 @@ func (s *session) setup(
 	} else {
 		cryptoStream, _ := s.OpenStream()
 		if s.version.UsesTLS() {
+			fmt.Println("c.version.UsesTLS")
 			s.cryptoSetup, err = handshake.NewCryptoSetupTLS(
 				hostname,
 				s.perspective,
@@ -309,6 +312,7 @@ func (s *session) setup(
 				aeadChanged,
 			)
 		} else {
+			fmt.Println("c.version.UsesCrypto")
 			s.cryptoSetup, err = newCryptoSetupClient(
 				hostname,
 				s.connectionID,

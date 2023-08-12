@@ -205,7 +205,7 @@ func (pcm *pconnManager) createPconns() error {
 		//fmt.Println("===============ifaces start==============", i)
 		// TODO (QDC): do this in a generic way
 		//cyb
-		if !strings.Contains(i.Name, "eth") && !strings.Contains(i.Name, "rmnet") && !strings.Contains(i.Name, "wlan") && !strings.Contains(i.Name, "enp11s0f0") && !strings.Contains(i.Name, "eno1") {
+		if !strings.Contains(i.Name, "eth") && !strings.Contains(i.Name, "rmnet") && !strings.Contains(i.Name, "wlan") && !strings.Contains(i.Name, "enp") && !strings.Contains(i.Name, "eno") {
 			continue
 		}
 		addrs, err := i.Addrs()

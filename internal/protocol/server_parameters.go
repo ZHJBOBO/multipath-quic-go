@@ -58,11 +58,13 @@ const DefaultMaxReceiveConnectionFlowControlWindowClient = 24 * (1 << 20) // 24 
 // This is the value that Chromium is using
 const ConnectionFlowControlMultiplier = 1.5
 
+//cyb 100->100000
 // MaxStreamsPerConnection is the maximum value accepted for the number of streams per connection
-const MaxStreamsPerConnection = 100
+const MaxStreamsPerConnection = 100000
 
+//cyb 100->100000
 // MaxIncomingDynamicStreamsPerConnection is the maximum value accepted for the incoming number of dynamic streams per connection
-const MaxIncomingDynamicStreamsPerConnection = 100
+const MaxIncomingDynamicStreamsPerConnection = 100000
 
 // MaxStreamsMultiplier is the slack the client is allowed for the maximum number of streams per connection, needed e.g. when packets are out of order or dropped. The minimum of this procentual increase and the absolute increment specified by MaxStreamsMinimumIncrement is used.
 const MaxStreamsMultiplier = 1.1
