@@ -2,6 +2,7 @@ package quic
 
 import (
 	"context"
+	"crypto/tls"
 	"io"
 	"net"
 	"time"
@@ -85,6 +86,11 @@ type Session interface {
 type NonFWSession interface {
 	Session
 	WaitUntilHandshakeComplete() error
+}
+
+type ConnectionState struct {
+	TLS               tls.ConnectionState
+	SupportsDatagrams bool
 }
 
 // Config contains all configuration data needed for a QUIC server or client.
